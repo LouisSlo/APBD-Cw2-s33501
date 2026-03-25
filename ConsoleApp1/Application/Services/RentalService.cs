@@ -27,12 +27,15 @@ public class RentalService
         {
             throw new InvalidOperationException($"The {equipment.Name} is currently unavailable.");
         }
+
         var activeRentals = _rentalRepository.GetActiveRentalsForUser(user).Count;
         var maxRentals = _limitPolicy.GetMaxActiveRentals(user);
         if (activeRentals >= maxRentals)
         {
-            throw new InvalidOperationException($"The user {user.FirstName} has reached the maximum number ({maxRentals}) of active rentals.");
+            throw new InvalidOperationException(
+                $"The user {user.FirstName} has reached the maximum number ({maxRentals}) of active rentals.");
         }
+
         var rental = new Rental(user, equipment, durationInDays);
         equipment.MarkAsUnavailable();
         _rentalRepository.Add(rental);
@@ -45,6 +48,7 @@ public class RentalService
         {
             throw new InvalidOperationException("The equipment has already been returned.");
         }
+
         var pentaly = _pentaltyCalculator.CalculatePenalty(rental.DueDate, returnDate);
         rental.ReturnEquipment(returnDate, pentaly);
     }

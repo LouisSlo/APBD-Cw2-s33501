@@ -11,5 +11,7 @@ public class RentalRepository
     public void Add(Rental rental) => _rentals.Add(rental);
     public List<Rental> GetAll() => _rentals;
     
-    public List<Rental> GetActiveRentalsForUser(User user) => _rentals.Where(r => r.User.Id == user.Id && r.ReturnDate == null).ToList();
+    public List<Rental> GetActiveRentalsForUser(User user) =>
+        _rentals.Where(r => r.User.Id == user.Id && r.ReturnDate == null).ToList();
+    
 }
